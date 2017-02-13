@@ -1,0 +1,78 @@
+//Namespaces 程序
+//将两个同名类放在不同的命名空间中
+//2017.2.10
+#include <iostream>
+using namespace std;	//using指令 
+namespace com_cpp_visual_chapter12_example5_namespaceA	//命名空间A
+    { 
+   int i = 3;	//成员变量i
+   class myClass	//成员类myClass
+     {
+	public:
+             int j;	//类成员j
+             void print()	//类成员方法print
+             { 
+             cout<< "命名空间:com_cpp_visual_chapter12_example5_namespaceA" << endl; 
+            } 
+     } ;
+ } 
+    
+namespace com_cpp_visual_chapter12_example5_namespaceB	//命名空间B
+  {
+     int i = 2;		//成员变量i
+     namespace		//嵌套定义无名命名空间
+     {
+        int k = 5;	//无名命名空间的成员变量k
+	}
+
+ class myClass	//命名空间B的成员类myClass
+{ 
+     public:
+     int j ;	//类成员j
+     void print() //类成员方法print
+      { 
+          cout<< "命名空间:com_cpp_visual_chapter12_example5_namespaceB" <<endl; 
+      } 
+     };
+
+   } 
+
+void main() 
+    { 
+    	//为com_cpp_visual_chapter12_example5_namespaceA定义命名空间别名nsA
+   namespace nsA = com_cpp_visual_chapter12_example5_namespaceA; 
+	//为com_cpp_visual_chapter12_example5_namespaceB定义两个命名空间别名nsB、nsC
+   namespace nsB = com_cpp_visual_chapter12_example5_namespaceB; 
+   namespace nsC = com_cpp_visual_chapter12_example5_namespaceB;
+        //使用命名空间域操作符，限定了访问的是哪个命名空间中的i
+	cout<< "命名空间A中的i=" << nsA::i<<endl;	
+        //nsB和nsC是同一个命名空间的别名，两者是等价的
+   cout<< "命名空间B中的i=" << nsB::i<<endl;		
+   cout<< "命名空间B中的i=" << nsC::i<<endl;	
+        //k是无名命名空间中的成员，使用上层命名空间的名字nsB来限定
+   cout<< "无名命名空间中的k=" << nsB::k<<endl;		
+   cout<<endl;	//输出换行符
+
+    {
+        using namespace nsB;	//通过using指令，限定在该代码段内使用命名空间B
+        cout<< "命名空间B中的i=" << i <<endl;	//i可直接使用
+             cout<< "无名命名空间中的k=" << k <<endl;	//k可直接使用
+     }
+	cout<<endl;
+
+	//花括号之外，using namespace nsB失效，故后面的代码仍需加域操作符::
+	nsB::myClass classB;	//命名空间nsB中的类实例classB
+	classB.print();	//classB中的print()
+	classB.j = 12;	//为classB中的变量j赋值
+	cout<<"j = " << classB.j<<endl;	//输出classB中的变量j
+	cout<<endl;
+
+	using namespace nsA;	//using指令，后面的代码无需再加nsA来限定
+	cout<< "命名空间A中的i=" << i<<endl;	//nsA中的变量i
+	myClass classA;	//命名空间nsA中的类实例classA
+	classA.print();	//classA中的print()
+	classA.j = 10;	//为classA中的变量j赋值
+	cout<<"j = "<< classA.j<<endl;	//输出classA中的变量j
+	cout<<endl;
+
+  }
